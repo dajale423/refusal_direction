@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "refusal-direction"
+version = "0.1.0"
+description = ""
+authors = ["Daniel Lee <dajale423@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.13"
+nnsight = "^0.3.6"
+ipykernel = "^6.29.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
