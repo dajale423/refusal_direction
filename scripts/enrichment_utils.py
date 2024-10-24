@@ -1,6 +1,7 @@
 import torch as t
 import einops
 import numpy as np
+from scipy.stats import chi2_contingency, chi2
 
 def load_tensor(filename):
     if device == "mps":
