@@ -46,16 +46,16 @@ def chi_square_test_latents(
     len_harmless: int
 ) -> Float[Tensor, 'd_sae']:
     """
-    Performs a chi-square test over the latent activities of SAE (Stacked Autoencoders).
+    Performs a chi-square test over the SAE latents.
 
     Parameters:
-    - frac_active_harmful (float): Fraction of harmful latents that are active.
-    - len_harmful (int): Total number of harmful latents.
-    - frac_active_harmless (float): Fraction of harmless latents that are active.
-    - len_harmless (int): Total number of harmless latents.
+    - frac_active_harmful (float): Fraction of harmful prompts that the SAE latents are active.
+    - len_harmful (int): Total number of harmful prompts.
+    - frac_active_harmless (float): Fraction of harmless prompts that the SAE latents are active.
+    - len_harmless (int): Total number of harmless prompts.
 
     Returns:
-    - np.ndarray: The result of the chi-squared test.
+    - Float[Tensor, 'd_sae']: The result of the chi-squared test.
     """
 
     # Calculate inactive latents for both groups
