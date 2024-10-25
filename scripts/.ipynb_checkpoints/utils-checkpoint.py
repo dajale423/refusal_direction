@@ -1,13 +1,9 @@
 import torch as t
-from torch import Tensor, nn
-
-from jaxtyping import Float, Int
 import einops
 import numpy as np
 from scipy.stats import chi2_contingency, chi2
 
 def load_tensor(filename):
-    device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
     if device == "mps":
         tensor = t.load(filename, map_location="cpu")
         tensor.to(device, dtype=t.float32)
