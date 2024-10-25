@@ -2,3 +2,5 @@
 .env
 __pycache__/
 venv
+notebooks/wandb
+notebooks/checkpoints
