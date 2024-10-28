@@ -6,6 +6,9 @@ import sys
 from jaxtyping import Float
 from torch import Tensor
 import torch as t
+from torch import Tensor, nn
+
+from jaxtyping import Float, Int
 import einops
 import numpy as np
 from scipy.stats import chi2_contingency, chi2
