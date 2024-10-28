@@ -6,17 +6,6 @@ import einops
 import numpy as np
 from scipy.stats import chi2_contingency, chi2
 
-def load_tensor(filename):
-    device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
-    if device == "mps":
-        tensor = t.load(filename, map_location="cpu")
-        tensor.to(device, dtype=t.float32)
-    else:
-        tensor = t.load(filename)
-    return tensor
-
-from scipy.stats import chi2_contingency, chi2
-
 def chi_squared_test(column):
     """
     Perform a chi-squared test.
