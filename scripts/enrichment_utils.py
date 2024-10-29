@@ -20,12 +20,14 @@ from sae_lens import (
     HookedSAETransformer,
 )
 from tqdm.auto import tqdm
+from transformers import AutoTokenizer
 
 device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
 
 project_script_path = os.path.abspath('../scripts')
 if project_script_path not in sys.path: sys.path.append(project_script_path)
 
+import model_utils
 
 def load_tensor(filename):
     if device == "mps":
@@ -123,10 +125,12 @@ def get_activations(prompts, sae_name, sae_id):
         sae_id=sae_id,
         device=str(device),
     )
+    tokenizer = AutoTokenizer.from_pretrained("google/gemma-2-2b-it")
 
     all_sae_acts_post = []
 
     for prompt in tqdm(prompts):
+        prompt = model_utils.get_chat_template(prompt, tokenizer)
         # Get top activations on final token
         _, cache = gemma2.run_with_cache_with_saes(
             prompt,
