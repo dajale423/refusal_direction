@@ -1,6 +1,7 @@
 # TODO(ebreck) Split these up into meaningful files.
 
 import gc
+import json
 import os
 import sys
 from jaxtyping import Float
@@ -156,6 +157,8 @@ def get_relative_activation(unsmoothed_frac_active_interest, unsmoothed_frac_act
 with open('/workspace/neuronpedia-api', 'r') as f:
     neuronpedia_headers = {"X-Api-Key": f.read().strip()}
 
+EXPLANATION_CACHE_PATH = os.path.abspath('../data/explanation_cache.json')
+
 # Cache calls to fetch explanations from Neuronpedia to make re-runs quick, and since
 # some latents appear for multiple sets of harms.
 # Note: these are auto-interpretation, so take with a grain of salt, but they have some value
@@ -164,7 +167,8 @@ try:
     if EXPLANATION_CACHE:
         print("Cache EXPLANATION_CACHE already exists, not overwriting it to avoid repeated API calls!")
 except NameError:
-    EXPLANATION_CACHE = {}
+    with open(EXPLANATION_CACHE_PATH) as f:
+        EXPLANATION_CACHE = json.load(f)
 
 def fetch_explanations(path):
     global EXPLANATION_CACHE
@@ -175,4 +179,8 @@ def fetch_explanations(path):
         explanations = response.json().get('explanations', [])
         explanation = explanations[0].get('description', "(unknown)") if explanations else "(unknown)"
         EXPLANATION_CACHE[path] = explanation
+        # Every 10 new explanations, save them out to the cache file.
+        if len(EXPLANATION_CACHE) % 10 == 0:
+            with open(EXPLANATION_CACHE_PATH, 'wt') as f:
+                json.dump(EXPLANATION_CACHE, f, indent=2)
         return explanation
