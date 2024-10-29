@@ -65,6 +65,31 @@ def steering_hook(
     else:
         return activations + steering_coefficient * sae.W_dec[latent_idx]
 
+
+def steering_hook_manual(
+    activations: Float[Tensor, "batch pos d_in"],
+    hook: HookPoint,
+    direction: Float[Tensor, "d_in"],
+    steering_coefficient: float = None,
+    steering_coefficient_ctx: Float[Tensor, "pos"] = None, # used to steer differently for different positions
+) -> Tensor:
+    """
+    Steers the model by returning a modified activations tensor, with some multiple of the steering vector added to all
+    sequence positions.
+    """
+    ## normalize the vector
+    norm = t.norm(direction, p=2)
+    direction = direction/norm
+    
+    if steering_coefficient is None:
+        if activations.shape[1] == 1:
+            # print("shape of 1")
+            return activations
+        perturbation_vector = einops.einsum(steering_coefficient_ctx, direction, "ctx, n_dim -> ctx n_dim")
+        return activations + perturbation_vector
+    else:
+        return activations + steering_coefficient * direction
+
 GENERATE_KWARGS = dict(temperature=0.5, freq_penalty=2.0, verbose=False)
 
 def generate_with_steering(
@@ -89,6 +114,31 @@ def generate_with_steering(
     )
 
     with model.hooks(fwd_hooks=[(sae.cfg.hook_name, _steering_hook)]):
+        output = model.generate(prompt, max_new_tokens=max_new_tokens, **GENERATE_KWARGS)
+
+    return output
+
+def generate_with_steering_manual(
+    model: HookedSAETransformer,
+    direction: Float[Tensor, "d_in"],
+    prompt: str,
+    steering_coefficient: float = None,
+    steering_coefficient_ctx: Float[Tensor, "pos"] = None, # used to steer differently for different positions
+    max_new_tokens: int = 50,
+    hook_name = f'blocks.15.hook_resid_pre',
+):
+    """
+    Generates text with steering. A multiple of the steering vector (the decoder weight for this latent) is added to
+    the last sequence position before every forward pass.
+    """
+    _steering_hook = partial(
+        steering_hook_manual,
+        direction=direction,
+        steering_coefficient=steering_coefficient,
+        steering_coefficient_ctx = steering_coefficient_ctx
+    )
+
+    with model.hooks(fwd_hooks=[(hook_name, _steering_hook)]):
         output = model.generate(prompt, max_new_tokens=max_new_tokens, **GENERATE_KWARGS)
 
     return output
@@ -128,5 +178,13 @@ def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direc
     steered_activation = perturbed_final_resid_pre_store.clone()
     
     return get_projection(refusal_direction, steered_activation)
+
+def add_along_latent(model, sae, prompt, coefficient, latent_idx, refusal_direction, activation_shape, refusal_layer = 15):
+        
+    new_projection_last_token_add = get_projection_for_coefficient(model, sae, prompt, latent_idx, 
+                                                                                refusal_direction, refusal_layer, 
+                                                                                activation_shape, coefficient, None)
+    
+    return new_projection_last_token_add[:, -1].item()
 
     
