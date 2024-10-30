@@ -44,6 +44,7 @@ from tqdm.auto import tqdm
 from transformer_lens import ActivationCache, HookedTransformer, utils
 from transformer_lens.hook_points import HookPoint
 
+from scripts.tensor_utils import get_projection
 device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
 
 def steering_hook(
@@ -127,7 +128,7 @@ def generate_with_steering_manual(
     steering_coefficient: float = None,
     steering_coefficient_ctx: Float[Tensor, "pos"] = None, # used to steer differently for different positions
     max_new_tokens: int = 50,
-    hook_name = f'blocks.15.hook_resid_pre',
+    hook_name: str = 'blocks.15.hook_resid_pre',
 ):
     """
     Generates text with steering. A multiple of the steering vector (the decoder weight for this latent) is added to
@@ -146,12 +147,8 @@ def generate_with_steering_manual(
 
     return output
 
-def get_projection(direction, activation):
-    direction_norm = t.linalg.vector_norm(direction)
-    return einops.einsum(direction, activation.double(), "n_dim, batch ctx n_dim -> batch ctx")  / direction_norm
-
 ## steer along SAE latent by some coefficient
-def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direction, refusal_layer, resid_pre_shape, steering_coefficient = None, steering_coefficient_ctx = None):
+def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direction, resid_pre_shape, steering_coefficient = None, steering_coefficient_ctx = None, refusal_layer = 15):
 
     hook_name = f'blocks.{refusal_layer}.hook_resid_pre'
     perturbed_final_resid_pre_store = t.zeros(resid_pre_shape, device=device)
