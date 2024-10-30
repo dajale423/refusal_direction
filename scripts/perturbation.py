@@ -44,7 +44,7 @@ from tqdm.auto import tqdm
 from transformer_lens import ActivationCache, HookedTransformer, utils
 from transformer_lens.hook_points import HookPoint
 
-from scripts.tensor_utils import get_projection
+from tensor_utils import get_projection
 device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
 
 def steering_hook(
@@ -101,6 +101,7 @@ def generate_with_steering(
     steering_coefficient: float = None,
     steering_coefficient_ctx: Float[Tensor, "pos"] = None, # used to steer differently for different positions
     max_new_tokens: int = 50,
+    prepend_bos: bool = False,
 ):
     """
     Generates text with steering. A multiple of the steering vector (the decoder weight for this latent) is added to
@@ -117,7 +118,7 @@ def generate_with_steering(
     )
 
     with model.hooks(fwd_hooks=[(sae.cfg.hook_name, _steering_hook)]):
-        output = model.generate(prompt, max_new_tokens=max_new_tokens, **GENERATE_KWARGS)
+        output = model.generate(prompt, max_new_tokens=max_new_tokens, **GENERATE_KWARGS, prepend_bos=prepend_bos)
 
     return output
 
@@ -173,6 +174,7 @@ def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direc
         fwd_hooks=[(sae.cfg.hook_name, _steering_hook),
                    (hook_name, get_activation_perturbed)],
         stop_at_layer=refusal_layer + 1,
+        prepend_bos=False,
     )
     
     steered_activation = perturbed_final_resid_pre_store.clone()
@@ -188,7 +190,7 @@ def add_along_latent(model, sae, prompt, coefficient, latent_idx, refusal_direct
     return new_projection_last_token_add[:, -1].item()
 
 
-def get_gradient(model, prompt, layer, refusal_direction, refusal_layer = 15):
+def get_gradient(model, prompt, layer, refusal_direction, refusal_layer = 15, prepend_bos=False):
     model.reset_hooks()
 
     backward_cache = {}
@@ -207,6 +209,7 @@ def get_gradient(model, prompt, layer, refusal_direction, refusal_layer = 15):
     _, full_cache = model.run_with_cache(
         prompt,
         stop_at_layer=refusal_layer + 1,
+        prepend_bos=prepend_bos
     )
 
     return backward_cache[f'blocks.{layer}.hook_resid_post']

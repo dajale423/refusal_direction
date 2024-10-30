@@ -2,7 +2,6 @@
 .env
 __pycache__/
 venv
-poetry.lock
 notebooks/.ipynb_checkpoints/
 notebooks/wandb
 notebooks/checkpoints
