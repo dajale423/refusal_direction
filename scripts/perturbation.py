@@ -44,6 +44,7 @@ from tqdm.auto import tqdm
 from transformer_lens import ActivationCache, HookedTransformer, utils
 from transformer_lens.hook_points import HookPoint
 
+from scripts.tensor_utils import get_projection
 device = "cuda" if t.cuda.is_available() else "mps" if t.backends.mps.is_available() else "cpu"
 
 def steering_hook(
@@ -105,6 +106,8 @@ def generate_with_steering(
     Generates text with steering. A multiple of the steering vector (the decoder weight for this latent) is added to
     the last sequence position before every forward pass.
     """
+    model.reset_hooks()
+    
     _steering_hook = partial(
         steering_hook,
         sae=sae,
@@ -125,12 +128,13 @@ def generate_with_steering_manual(
     steering_coefficient: float = None,
     steering_coefficient_ctx: Float[Tensor, "pos"] = None, # used to steer differently for different positions
     max_new_tokens: int = 50,
-    hook_name = f'blocks.15.hook_resid_pre',
+    hook_name: str = 'blocks.15.hook_resid_pre',
 ):
     """
     Generates text with steering. A multiple of the steering vector (the decoder weight for this latent) is added to
     the last sequence position before every forward pass.
     """
+    
     _steering_hook = partial(
         steering_hook_manual,
         direction=direction,
@@ -143,12 +147,8 @@ def generate_with_steering_manual(
 
     return output
 
-def get_projection(direction, activation):
-    direction_norm = t.linalg.vector_norm(direction)
-    return einops.einsum(direction, activation.double(), "n_dim, batch ctx n_dim -> batch ctx")  / direction_norm
-
 ## steer along SAE latent by some coefficient
-def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direction, refusal_layer, resid_pre_shape, steering_coefficient = None, steering_coefficient_ctx = None):
+def get_projection_for_coefficient(model, sae, prompt, latent_idx, refusal_direction, resid_pre_shape, steering_coefficient = None, steering_coefficient_ctx = None, refusal_layer = 15):
 
     hook_name = f'blocks.{refusal_layer}.hook_resid_pre'
     perturbed_final_resid_pre_store = t.zeros(resid_pre_shape, device=device)
@@ -186,5 +186,29 @@ def add_along_latent(model, sae, prompt, coefficient, latent_idx, refusal_direct
                                                                                 activation_shape, coefficient, None)
     
     return new_projection_last_token_add[:, -1].item()
+
+
+def get_gradient(model, prompt, layer, refusal_direction, refusal_layer = 15):
+    model.reset_hooks()
+
+    backward_cache = {}
+    def backward_hook(gradient, hook):
+        backward_cache[hook.name] = gradient.detach()
+
+    model.add_hook(f'blocks.{layer}.hook_resid_post', backward_hook, dir="bwd")
+    hook_name_refusal = f'blocks.{refusal_layer}.hook_resid_pre'
+    
+    def metric_hook(activations, hook):
+        projection = get_projection(refusal_direction, activations)[0,-1]
+        projection.backward()
+    
+    model.add_hook(hook_name_refusal, metric_hook, dir="fwd")
+    
+    _, full_cache = model.run_with_cache(
+        prompt,
+        stop_at_layer=refusal_layer + 1,
+    )
+
+    return backward_cache[f'blocks.{layer}.hook_resid_post']
 
     
