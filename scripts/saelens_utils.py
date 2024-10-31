@@ -14,6 +14,21 @@ import sys
 sys.path.append('../')
 from scripts.tensor_utils import get_projection
 
+def get_sae_acts_post(
+    model, 
+    sae,
+    prompt,
+    prepend_bos = True
+):
+    _, cache = model.run_with_cache_with_saes(
+        prompt,
+        saes=[sae],
+        stop_at_layer=sae.cfg.hook_layer + 1,
+        prepend_bos = prepend_bos
+    )
+    sae_acts_post = cache[f"{sae.cfg.hook_name}.hook_sae_acts_post"]
+    return sae_acts_post
+
 def get_sae_activation(
     model, 
     sae,
@@ -21,7 +36,6 @@ def get_sae_activation(
     latent_idx = None,
     token_position = -1):
 
-    # Get activations on final token
     _, cache = model.run_with_cache_with_saes(
         prompt,
         saes=[sae],
@@ -45,6 +59,7 @@ def get_refusal_projection(model,
         prompt,
         saes=[sae],
         stop_at_layer=refusal_layer + 1,
+        prepend_bos=False
     )
     
     original_activation = original_cache[hook_name_refusal]
