@@ -117,7 +117,7 @@ def clear_memory_after(f):
     return func
 
 @clear_memory_after
-def get_activations(prompts, sae_name, sae_id):
+def get_activations(prompts, sae_name, sae_id, use_chat_template=True, token_position=-1):
     t.set_grad_enabled(False)
     gemma2: HookedSAETransformer = HookedSAETransformer.from_pretrained("gemma-2-2b-it", device=device)
     gemma2_sae, cfg_dict, sparsity = SAE.from_pretrained(
@@ -130,15 +130,20 @@ def get_activations(prompts, sae_name, sae_id):
     all_sae_acts_post = []
 
     for prompt in tqdm(prompts):
-        prompt = model_utils.get_chat_template(prompt, tokenizer)
+        if use_chat_template:
+            prompt = model_utils.get_chat_template(prompt, tokenizer)
         # Get top activations on final token
         _, cache = gemma2.run_with_cache_with_saes(
             prompt,
             saes=[gemma2_sae],
             stop_at_layer=gemma2_sae.cfg.hook_layer + 1,
         )
-        sae_acts_post = cache[f"{gemma2_sae.cfg.hook_name}.hook_sae_acts_post"][0, -1, :]
-        all_sae_acts_post.append(sae_acts_post)
+        if token_position is not None:
+            sae_acts_post = cache[f"{gemma2_sae.cfg.hook_name}.hook_sae_acts_post"][0, token_position, :]
+            all_sae_acts_post.append(sae_acts_post)
+        else:
+            sae_acts_post = cache[f"{gemma2_sae.cfg.hook_name}.hook_sae_acts_post"][0, :, :]
+            all_sae_acts_post.extend([sae_acts_post[i, :] for i in range(sae_acts_post.shape[0])])
 
     return t.stack(all_sae_acts_post)
 
