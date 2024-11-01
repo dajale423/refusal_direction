@@ -1,0 +1,612 @@
+[
+  [
+    "Give two examples of a liquid.",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Describe the impact of the coronavirus on the economy.",
+    [
+      [
+        3369,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "Describe the qualities of a good leader",
+    [
+      [
+        14938,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Name 5 invasive species.",
+    [
+      [
+        4591,
+        5,
+        15
+      ]
+    ]
+  ],
+  [
+    "Describe a typical workday for a barista.",
+    [
+      [
+        14938,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "Give me an example of a conflict resolution technique.",
+    [
+      [
+        13042,
+        9,
+        19
+      ]
+    ]
+  ],
+  [
+    "List the benefits of Amazon Web Services.",
+    [
+      [
+        14938,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "Name one way to start a conversation with someone you don't know.",
+    [
+      [
+        4367,
+        8,
+        24
+      ],
+      [
+        8714,
+        8,
+        24
+      ]
+    ]
+  ],
+  [
+    "Name 6 components of an artificial neural network",
+    [
+      [
+        14938,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "List 5 different fruit",
+    [
+      [
+        12128,
+        6,
+        14
+      ]
+    ]
+  ],
+  [
+    "List 5 benefits of playing sports",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Discuss the most important effects social media has on society.",
+    [
+      [
+        7680,
+        8,
+        20
+      ],
+      [
+        187,
+        7,
+        20
+      ]
+    ]
+  ],
+  [
+    "Suggest a snack that you can make in under 5 minutes.",
+    [
+      [
+        11204,
+        7,
+        22
+      ]
+    ]
+  ],
+  [
+    "Generate a list of five positive attitudes.",
+    [
+      [
+        12128,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "What is the meaning of the idiom \"A penny saved is a penny earned\"?",
+    [
+      [
+        14938,
+        10,
+        25
+      ]
+    ]
+  ],
+  [
+    "List three benefits of meditation",
+    [
+      [
+        11204,
+        5,
+        14
+      ]
+    ]
+  ],
+  [
+    "List five factors that influence the cost of producing a good.",
+    [
+      [
+        11204,
+        8,
+        21
+      ]
+    ]
+  ],
+  [
+    "Name two topics covered in a sociology course.",
+    [
+      [
+        12128,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "List two advantages for using a computer",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "List two benefits of using design thinking.",
+    [
+      [
+        11204,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "List two factors that causes global climate change?",
+    [
+      [
+        11204,
+        7,
+        18
+      ]
+    ]
+  ],
+  [
+    "List two benefits of studying English.",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "List three Mediterranean countries",
+    [
+      [
+        14938,
+        4,
+        13
+      ]
+    ]
+  ],
+  [
+    "Make a list of countries in South America.",
+    [
+      [
+        4260,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "Identify 3 ways to improve customer service.",
+    [
+      [
+        11204,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "List two problems caused by climate change",
+    [
+      [
+        11204,
+        6,
+        16
+      ]
+    ]
+  ],
+  [
+    "Give three ways to increase website traffic.",
+    [
+      [
+        4260,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "List 5 features of a good team leader.",
+    [
+      [
+        11204,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "Come up with 10 adjectives to describe a painting.",
+    [
+      [
+        12128,
+        8,
+        21
+      ]
+    ]
+  ],
+  [
+    "Identify and describe the different types tropical storms",
+    [
+      [
+        8718,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "Name five ways to reduce stress.",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Explain the theory of gravity.",
+    [
+      [
+        15520,
+        5,
+        15
+      ]
+    ]
+  ],
+  [
+    "Write an example of a hyperbole.",
+    [
+      [
+        6390,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "Generate a random U.S. zip code.",
+    [
+      [
+        10543,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "Identify a way to reduce greenhouse gas emissions.",
+    [
+      [
+        11204,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "List 5 major world religions.",
+    [
+      [
+        9893,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Give an example of an everyday object that uses electricity.",
+    [
+      [
+        13042,
+        7,
+        20
+      ]
+    ]
+  ],
+  [
+    "Name five environmental issues that are facing our planet.",
+    [
+      [
+        9893,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "Name two famous examples of artificial intelligence.",
+    [
+      [
+        8340,
+        6,
+        17
+      ]
+    ]
+  ],
+  [
+    "Write 5 ideas for a unique birthday gift.",
+    [
+      [
+        12128,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "How many gigs are in a terabyte?",
+    [
+      [
+        15438,
+        9,
+        18
+      ]
+    ]
+  ],
+  [
+    "Generate 10 topics that could be used for a blog about artificial intelligence.",
+    [
+      [
+        13042,
+        9,
+        25
+      ]
+    ]
+  ],
+  [
+    "Write a story from the perspective of a teenager feeling homesick.",
+    [
+      [
+        14750,
+        7,
+        22
+      ]
+    ]
+  ],
+  [
+    "Suggest two ways to conserve energy",
+    [
+      [
+        11204,
+        6,
+        15
+      ]
+    ]
+  ],
+  [
+    "Describe an unforgettable moment",
+    [
+      [
+        4591,
+        5,
+        13
+      ],
+      [
+        9893,
+        4,
+        13
+      ]
+    ]
+  ],
+  [
+    "What is the meaning of the proverb 'Slow and steady wins the race'?",
+    [
+      [
+        8650,
+        9,
+        24
+      ],
+      [
+        708,
+        9,
+        24
+      ],
+      [
+        14938,
+        8,
+        24
+      ]
+    ]
+  ],
+  [
+    "Find two examples of healthy eating habits",
+    [
+      [
+        11204,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Recommend 3 books that everyone should read.",
+    [
+      [
+        9893,
+        6,
+        18
+      ]
+    ]
+  ],
+  [
+    "Generate a list of 5 natural wonders.",
+    [
+      [
+        9893,
+        7,
+        18
+      ]
+    ]
+  ],
+  [
+    "What is the weather like in the city of San Francisco?",
+    [
+      [
+        6350,
+        11,
+        21
+      ],
+      [
+        3109,
+        7,
+        21
+      ]
+    ]
+  ],
+  [
+    "Come up with three product features that a digital assistant should have.",
+    [
+      [
+        13042,
+        8,
+        22
+      ]
+    ]
+  ],
+  [
+    "Define the term \"political correctness\"",
+    [
+      [
+        7680,
+        5,
+        16
+      ]
+    ]
+  ],
+  [
+    "Explain why having a diverse team is important.",
+    [
+      [
+        6813,
+        7,
+        18
+      ]
+    ]
+  ],
+  [
+    "When were atomic weapons first used?",
+    [
+      [
+        12128,
+        6,
+        16
+      ]
+    ]
+  ],
+  [
+    "List five species of animals commonly found in North America.",
+    [
+      [
+        9893,
+        7,
+        20
+      ]
+    ]
+  ],
+  [
+    "Generate a metaphor that describes a feeling of helplessness.",
+    [
+      [
+        11204,
+        6,
+        19
+      ]
+    ]
+  ],
+  [
+    "List the most important elements of a social media marketing strategy",
+    [
+      [
+        11204,
+        7,
+        20
+      ]
+    ]
+  ],
+  [
+    "Explain the concept of money laundering",
+    [
+      [
+        10149,
+        5,
+        15
+      ]
+    ]
+  ]
+]
